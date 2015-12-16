@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+
+{% block title %}Profil {% endblock %}
+
+
+{% block content %}
+
+<form name="profile" method="post" action={% url "profil"  %}>
+{% csrf_token %}
+{{form2.as_p}}
+{{form3.as_p}}
+{{form1.zapis}}
+
+
+
+<input type="submit"  value="update">    
+</form>
+
+
+{% endblock %}
