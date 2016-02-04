@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+
+{% block title %}Profil {% endblock %}
+
+
+{% block content %}
+
+
+<form  enctype="multipart/form-data" method="post" action={% url "profil"  %}>
+{% csrf_token %}
+{{form1.as_p}}
+<input type="submit" name="other" value="update">    
+</form>
+
+
+<form  method="post" action={% url "profil"  %}>
+{% csrf_token %}
+{{form2.as_p}}
+<input type="submit" name="nameEmail"  value="update">    
+</form>
+
+
+<form method="post" action={% url "profil"  %}>
+{% csrf_token %}
+{{form3.as_p}}
+<input type="submit" name="password" value="update">    
+</form>
+
+
+<ul>
+{% for note in notes %}
+
+<li><a href="{% url 'noteDetail' note.id %}">{{note.name}}</a></li>
+
+{%endfor%}
+</ul>
+
+
+
+
+
+
+{% endblock %}
