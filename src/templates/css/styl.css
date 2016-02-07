@@ -1,14 +1,8 @@
-p{
-    color:darkgreen;
-}
+body{ background-color: gray;} 
 
-h1{
-    color:green;
-}
+p { color: blue; } 
 
-body{ background-color: lightblue;} 
-
-
+h3{ color: white; }
 
 ul {
     list-style-type: none;

@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'turistickaMapa.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
+
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login/$', 'mapa.views.logIn', name='logIn'),
     url(r'^logout/$', 'mapa.views.logOut', name='logOut'),
@@ -18,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^noteadd/$', 'mapa.views.noteAdd', name='noteAdd'),
      url(r'^searching/$', 'mapa.views.searching', name='searching'),
     url(r'^profil/$', 'mapa.views.profil', name='profil'),
-    ##url(r'^teampridaj/$', 'mapa.views.teamPridaj', name='teamPridaj'),
+    url(r'^teampridaj/$', 'mapa.views.teamPridaj', name='teamPridaj'),
     ##url(r'^teamuprav/(?P<team_id>\d+)/$', 'mapa.views.teamUprav', name='teamUprav'),
    
     

@@ -21,6 +21,7 @@
 {% block content %}
 
 
+
 <form  method="post" action={% url "noteAdd"  %}>
 {% csrf_token %}
 {{ form.as_p }}
