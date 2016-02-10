@@ -61,7 +61,6 @@ class Comment(models.Model):
         return self.text
     
 
-
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
     avatar = models.ImageField("Image", upload_to="images/")

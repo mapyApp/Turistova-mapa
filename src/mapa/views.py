@@ -18,7 +18,7 @@ from itertools import chain
 # Create your views here.
 def noteDetail(request,note_id):
     if not request.user.is_authenticated():
-        return redirect("logIn")
+        return redirect("logIn")  
     note =  Note.objects.get(pk=note_id)
     discussion =  Comment.objects.filter(note=note)
     ideaForm = IdeaForm()
@@ -42,7 +42,7 @@ def noteDetail(request,note_id):
 
 def noteAdd(request):
     if not request.user.is_authenticated():
-        return redirect("logIn")
+        return redirect("logIn")  
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = NoteForm(request.POST)
@@ -69,7 +69,7 @@ def noteAdd(request):
 def value(st):
     if st!= "":
         return st
-    return-1
+    return -1
 
 def dateFormat(post):
     print(post)
@@ -80,11 +80,11 @@ def dateFormat(post):
 
 def map(request,layer_id=1):
     if not request.user.is_authenticated():
-        return redirect("logIn")
-    if "find" in request.POST:
+        return redirect("logIn")  
+    if "find" in request.POST:  
         
         
-        
+      
         notesLayer= Note.objects.filter(layer__id=value(request.POST["layer"]))
         notesName = Note.objects.filter(id=value(request.POST["name"]))
         notesRegion = Note.objects.filter(region=value(request.POST["region"]))
@@ -110,7 +110,7 @@ def map(request,layer_id=1):
 
 def logIn(request):
     if request.user.is_authenticated():
-        return redirect("map",1)
+        return redirect("map",1) 
     if(request.POST):
         name = request.POST['user']
         password = request.POST['password']
@@ -130,7 +130,7 @@ def logOut(request):
 
 def profil(request):
     if not request.user.is_authenticated():
-        return redirect("logIn.html")
+        return redirect("logIn")
     if request.method == "POST":
         if "other" in request.POST:
             form1 = UserProfilForm(request.POST,request.FILES,instance=request.user.profile)
@@ -138,6 +138,9 @@ def profil(request):
                 instance = form1.save(commit=False)
                 instance.autor = request.user
                 instance.save()
+                print("image je ok")
+            else:
+                print("inavalidny image")
         if "nameEmail" in request.POST:
             form2 = UserForm(request.POST,instance = request.user)
             if form2.is_valid():
@@ -147,8 +150,8 @@ def profil(request):
             if form3.is_valid():
                 form3.save()
                 update_session_auth_hash(request,request.user)
-        return redirect("logOut")
-    #u = UserProfile.objects.get(id=1)
+        return redirect("profil") 
+   #u = UserProfile.objects.get(id=1)
     notes = Note.objects.filter(participants__id=request.user.id)
     form1 = UserProfilForm(instance = request.user.profile)
     form2 = UserForm(instance = request.user)
@@ -158,7 +161,7 @@ def profil(request):
 
 def teamPridaj(request):
     if not request.user.is_authenticated():
-        return redirect("logIn.html")
+        return redirect("logIn")
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = TeamForm(request.POST)
@@ -180,7 +183,7 @@ def teamPridaj(request):
 
 def teamUprav(request,team_id,teamVytvoreny=False):
     if not request.user.is_authenticated():
-        return redirect("logIn.html")
+        return redirect("logIn")
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         team = Team.objects.get(pk=team_id)
@@ -206,7 +209,7 @@ def napadUprav(request):
 
 def searching(request):
     if not request.user.is_authenticated():
-        return redirect("logIn.html")
+        return redirect("logIn")
     notes = []
     if "find" in request.POST:
         notesLayer= Note.objects.filter(layer__id=value(request.POST["layer"]))
