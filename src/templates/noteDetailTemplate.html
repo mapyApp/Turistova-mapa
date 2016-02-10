@@ -11,6 +11,17 @@
 <p>{{note.date}}</p>
 <p>{{note.region}}</p>
 <p>{{note.description}}</p>
+<h2>Galéria</h2>
+{% for pic in gallery %}
+<p> Cesta je: {{pic.img.url}}</p>
+<div class="img">
+  <a target="_blank" href=../../{{pic.img.url}}>
+    <img src={{pic.img.url}} alt={{pic.name}} width="300" height="200">
+  </a>
+  <div class="desc"> {{pic.description}}</div>
+</div>
+
+{% endfor %}
 <h2>Diskusia</h2>
 {% for d in discussion %}
 

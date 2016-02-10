@@ -74,11 +74,25 @@ class FindForm(forms.Form):
         st=str(item[0].day)+"."+str(item[0].month)+"."+str(item[0].year)
         array.append((st,st))
     default = array[0][0]
-    name =  forms.ModelChoiceField(Note.objects.all(),required = False)
-    layer = forms.ModelChoiceField(Layer.objects.all(),required = False)
-    date = forms.ChoiceField(choices=array,required = False)
-    region = forms.ModelChoiceField(Region.objects.all(),required = False)
-    user = forms.ModelChoiceField(User.objects.all(),required = False)
+    nameFind =  forms.ModelChoiceField(Note.objects.all(),required = False)
+    layerFind = forms.ModelChoiceField(Layer.objects.all(),required = False)
+    dateFind = forms.ChoiceField(choices=array,required = False)
+    regionFind = forms.ModelChoiceField(Region.objects.all(),required = False)
+    userFind = forms.ModelChoiceField(User.objects.all(),required = False)
+    
+    
+class FindFormAdvance(forms.Form):
+    cursor = connection.cursor()
+    dates = cursor.execute("select distinct date from mapa_note;")
+    array = [("-","-")]
+    for item in dates:
+        st=str(item[0].day)+"."+str(item[0].month)+"."+str(item[0].year)
+        array.append((st,st))
+    default = array[0][0]
+    nameFindAd =  forms.ModelMultipleChoiceField(Note.objects.all(),required = False)
+    layerFindAd = forms.ModelMultipleChoiceField(Layer.objects.all(),required = False)
+    regionFindAd = forms.ModelMultipleChoiceField(Region.objects.all(),required = False)
+    userFindAd = forms.ModelMultipleChoiceField(User.objects.all(),required = False)
     
 
         

@@ -12,7 +12,7 @@
 
 
 
-<input type="submit" name="find"  value="find">    
+<input type="submit" name="advanceFind"  value="find">    
 </form>
 
 <ul>
@@ -21,8 +21,6 @@
 <li><a href="{% url 'noteDetail' note.id %}">{{note.name}}</a></li>
 
 {%endfor%}
-
-
 </ul>
 {% endblock %}
 

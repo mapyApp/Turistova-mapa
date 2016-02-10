@@ -18,9 +18,11 @@ from itertools import chain
 # Create your views here.
 def noteDetail(request,note_id):
     if not request.user.is_authenticated():
-        return redirect("logIn")  
+        return redirect("logIn")
     note =  Note.objects.get(pk=note_id)
     discussion =  Comment.objects.filter(note=note)
+    gallery = Picture.objects.filter(note=note)
+    print(gallery)
     ideaForm = IdeaForm()
     ideas = Idea.objects.filter(note=note)
     if request.method=="POST":
@@ -38,86 +40,46 @@ def noteDetail(request,note_id):
                     note.idea.add(m)
                     note.save()
                     return redirect("noteDetail",note_id)
-    return  render(request,"noteDetailTemplate.html",dict(note=note,discussion=discussion,idea=ideaForm,ideas=ideas))
+    return  render(request,"noteDetailTemplate.html",dict(note=note,discussion=discussion,idea=ideaForm,ideas=ideas,gallery=gallery))
 
 def noteAdd(request):
     if not request.user.is_authenticated():
-        return redirect("logIn")  
+        return redirect("logIn")
     if request.method == 'POST':
+        if "noteAdd" in request.POST:
         # create a form instance and populate it with data from the request:
-        form = NoteForm(request.POST)
+            form = NoteForm(request.POST)
         # check whether it's valid:
-        if form.is_valid():
-            m = form.save(commit = False)
-            m.autor = request.user
-            try:
-                m.lat = float(request.POST["lat"])
-                m.lng = float(request.POST["lng"])
-            except ValueError:
-                form = NoteForm(request.POST)
-                error = '<p>Nebolo zadane umiestnenie na mape</p>'
-                return render(request,"zapisPridaj.html",dict(form=form,error=error))
-            m.save()
-            form.save_m2m()
-            return redirect("noteDetail",m.id)
-    # if a GET (or any other method) we'll create a blank form
-    else:     
-        form = NoteForm()
-
+            if form.is_valid():
+                m = form.save(commit = False)
+                m.autor = request.user
+                try:
+                    m.lat = float(request.POST["lat"])
+                    m.lng = float(request.POST["lng"])
+                except ValueError:
+                    form = NoteForm(request.POST)
+                    error = '<p>Nebolo zadane umiestnenie na mape</p>'
+                    return render(request,"noteAddTemplate.html",dict(form=form,error=error))
+                m.save()
+                form.save_m2m()
+                return redirect("noteDetail",m.id)
+    
+    form = NoteForm()
     return render(request, 'noteAddTemplate.html', {'form': form,})
 
-def value(st):
-    if st!= "":
-        return st
-    return -1
 
-def dateFormat(post):
-    print(post)
-    if post != "-":
-        date = post.split(".")
-        return date[2]+"-"+date[1]+"-"+date[0]
-    return "2000-2-2"
 
-def map(request,layer_id=1):
-    if not request.user.is_authenticated():
-        return redirect("logIn")  
-    if "find" in request.POST:  
-        
-        
-      
-        notesLayer= Note.objects.filter(layer__id=value(request.POST["layer"]))
-        notesName = Note.objects.filter(id=value(request.POST["name"]))
-        notesRegion = Note.objects.filter(region=value(request.POST["region"]))
-        notesUser = Note.objects.filter(participants__id=value(request.POST["user"]))
-        notesDate = Note.objects.filter(date=dateFormat(request.POST["date"]))
-        notes = list(chain(notesLayer,notesName,notesRegion,notesUser,notesDate))
-        
-        findForm = FindForm()
-        
-        
-        if request.POST["layer"]:
-            l = Layer.objects.get(id=request.POST["layer"])
-        else:    
-            l = Layer.objects.get(id=1)
-        return render(request,"map.html",dict(layer=l,notes=notes,findForm = findForm))
-    try:
-        l = Layer.objects.get(id=layer_id)
-    except Layer.DoesNotExist:
-        raise Http404("Vrstva neexistuje!!")
-    notes = Note.objects.filter(layer=l)
-    findForm = FindForm()    
-    return render(request,"map.html",dict(layer=l,notes=notes,findForm = findForm))
 
 def logIn(request):
     if request.user.is_authenticated():
-        return redirect("map",1) 
+        return redirect("profil")
     if(request.POST):
         name = request.POST['user']
         password = request.POST['password']
         user = authenticate(username=name, password=password)
         if user is not None:
             login(request, user)
-            return redirect("map",1)
+            return redirect("profil")
             
         else:
             return render(request,"logIn.html",{"errorLog":"Boli zadane zle udaje"})
@@ -130,7 +92,7 @@ def logOut(request):
 
 def profil(request):
     if not request.user.is_authenticated():
-        return redirect("logIn")
+        return redirect("logIn.html")
     if request.method == "POST":
         if "other" in request.POST:
             form1 = UserProfilForm(request.POST,request.FILES,instance=request.user.profile)
@@ -138,9 +100,6 @@ def profil(request):
                 instance = form1.save(commit=False)
                 instance.autor = request.user
                 instance.save()
-                print("image je ok")
-            else:
-                print("inavalidny image")
         if "nameEmail" in request.POST:
             form2 = UserForm(request.POST,instance = request.user)
             if form2.is_valid():
@@ -150,8 +109,7 @@ def profil(request):
             if form3.is_valid():
                 form3.save()
                 update_session_auth_hash(request,request.user)
-        return redirect("profil") 
-   #u = UserProfile.objects.get(id=1)
+        
     notes = Note.objects.filter(participants__id=request.user.id)
     form1 = UserProfilForm(instance = request.user.profile)
     form2 = UserForm(instance = request.user)
@@ -161,7 +119,7 @@ def profil(request):
 
 def teamPridaj(request):
     if not request.user.is_authenticated():
-        return redirect("logIn")
+        return redirect("logIn.html")
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = TeamForm(request.POST)
@@ -183,7 +141,7 @@ def teamPridaj(request):
 
 def teamUprav(request,team_id,teamVytvoreny=False):
     if not request.user.is_authenticated():
-        return redirect("logIn")
+        return redirect("logIn.html")
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         team = Team.objects.get(pk=team_id)
@@ -204,20 +162,35 @@ def teamUprav(request,team_id,teamVytvoreny=False):
     return render(request,"teamUprav.html",dict(form = form,id=team_id))
 
 
-def napadUprav(request):
-    pass
+def value(st):
+    if st!= "":
+        return st
+    return-1
+
+def dateFormat(post):
+    if post != ("-"):
+        date = post.split(".")
+        return date[2]+"-"+date[1]+"-"+date[0]
+    return "2000-2-2"
 
 def searching(request):
     if not request.user.is_authenticated():
-        return redirect("logIn")
-    notes = []
-    if "find" in request.POST:
-        notesLayer= Note.objects.filter(layer__id=value(request.POST["layer"]))
-        notesName = Note.objects.filter(id=value(request.POST["name"]))
-        notesRegion = Note.objects.filter(region=value(request.POST["region"]))
-        notesUser = Note.objects.filter(participants__id=value(request.POST["user"]))
-        notesDate = Note.objects.filter(date=dateFormat(request.POST["date"]))
-        notes = list(chain(notesLayer,notesName,notesRegion,notesUser,notesDate))
-    form = FindForm()
+        return redirect("logIn.html")
+    notes=set()
+    if "advanceFind" in request.POST:
+        query = request.POST.getlist("layerFindAd")
+        for item in query:
+            map(notes.add,Note.objects.filter(layer__id=value(item)))
+        query = request.POST.getlist("nameFindAd")
+        for item in query:
+            map(notes.add,Note.objects.filter(id=value(item)))
+        query = request.POST.getlist("regionFindAd")
+        for item in query:
+            map(notes.add,Note.objects.filter(region=value(item)))
+        query = request.POST.getlist("userFindAd")
+        for item in query:
+            map(notes.add,Note.objects.filter(participants__id=value(item)))
+        
+    form = FindFormAdvance()
     return render(request,"searchingTemplate.html",dict(form=form,notes=notes))
 

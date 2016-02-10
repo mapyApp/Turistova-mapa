@@ -47,6 +47,7 @@ class Note(models.Model):
     lat = models.DecimalField(max_digits=9, decimal_places=6)
     lng = models.DecimalField(max_digits=9, decimal_places=6)
     
+    
                                     
     def __unicode__(self):
         return self.name
@@ -60,6 +61,7 @@ class Comment(models.Model):
     def __unicode__(self):
         return self.text
     
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
@@ -77,6 +79,13 @@ class Team(models.Model):
     
     def __unicode__(self):
         return self.name
+        
+class Picture(models.Model):
+    note = models.ForeignKey(Note)
+    name = models.CharField(max_length=20)
+    description = models.TextField()
+    img = models.ImageField("picture", upload_to="images/gallery")
+    
 
 
 

@@ -1,25 +1,8 @@
-{% extends "base.html" %}
-
 {% block head %}
-<style type="text/css">
-      html, body { height: 100%; margin: 0; padding: 0; }
-      #map { width:80%; height: 80%; }
-    </style>
 
-<script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD328dhNcGIIU90walKJfgnwiWiAAgwCW8&callback=initMap">
-        
-    </script>
-
-
-{% endblock %}
-
-{% block title %}Mapa{% endblock %}
-
-{% block content %}
-
-
-
+ <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD328dhNcGIIU90walKJfgnwiWiAAgwCW8&callback=initMap"></script>
+ 
+ {% endblock %}
 
 
 <script  type="text/javascript" >
@@ -54,7 +37,7 @@ var toType = function(obj) {
 function initMap() {
  map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 48.578333, lng: 19.123333},
-    zoom: 8
+    zoom: 7
   });
  
  
@@ -81,22 +64,14 @@ var returnGeom3 = '19.86791,49.19713|19.91125,49.22617|19.97958,49.22639|20.0205
 }
 
 
+
 function nastavenie() {
-      initMap();
+      console.log("mapa1");
+     // initMap();
 }
 
 
 $(document).ready(nastavenie);
 </script>
-<div id="map"></div>
-    
 
-
-
-
-<form  method="post" action={% url "map" 1 %}>
-{% csrf_token %}
-{{ findForm.as_p }}
-
-<input type="submit" name="find" value="find">
-{% endblock %}
+<div id="map"></div><!--close header-->
