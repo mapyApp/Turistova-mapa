@@ -5,7 +5,7 @@
 
 
 {% block content %}
-<div class="username">
+
 <form  method="post" action={% url "searching"  %}>
 {% csrf_token %}
 {{form.as_p}}
@@ -14,7 +14,7 @@
 
 <input type="submit" name="advanceFind"  value="find">    
 </form>
-</div> 
+
 <ul>
 {% for note in notes %}
 

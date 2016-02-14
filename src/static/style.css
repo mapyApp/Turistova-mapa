@@ -202,22 +202,34 @@ ul#menu li.current a, ul#menu li:hover a
 
 .sidebar p
 { color: #FFF;}  
-
+.sidebar{
+	border: none;}
 #content
 { width: 665px;
   margin-bottom: 20px;
+  float: left;
+  }
+  
+#content:hover
+{ width: 665px;
+  margin-bottom: 20px;
+   
   float: left;}
 
 .content_item
 { width: 665px;
   margin-top: 20px;
-  margin-bottom: 20px;}
+  margin-bottom: 20px;
+  
+  }
   
 .content_container
 { width: 310px;
   padding: 5px;
   margin-right: 10px;
-  float: left;}
+  float: left;
+   
+  }
   
 .content_images_text
 { float: left;
@@ -288,18 +300,54 @@ ul#menu li.current a, ul#menu li:hover a
   
 .button_small a
 { color: #FFF;
-  padding-left: 5px;}
+  padding-left: 5px;
+  border: 5px solid red;}
+
+div.username {
+	border: 5px solid lightgray;
+   border-radius: 25px;
+   padding: 10px;
+   margin: 2px;
+   font-size: 110%;
+   
+	}
+
+div.username :hover {
+	font-weight: bold;
+   
+	}
+input.button {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+
 
 .form_settings
-{ margin: 15px 0 0 0;}
+{ margin: 15px 0 0 0;
+text-decoration: underline;
+border: 5px solid red;}
 
 .form_settings p
-{ padding: 0 0 4px 0;}
+{ padding: 0 0 4px 0;
+border: 5px solid red;
+}
 
 .form_settings span
 { float: left; 
   width: 280px; 
-  text-align: left;}
+  text-align: left;
+  border: 5px solid red;}
   
 .form_settings input, .form_settings textarea
 { padding: 2px; 
@@ -307,7 +355,10 @@ ul#menu li.current a, ul#menu li:hover a
   font: 100% arial; 
   border: 1px solid #BBB; 
   background: #FFF; 
-  color: #47433F;}
+  color: #47433F;
+  text-decoration: underline;
+  border: 5px solid red;
+  }
   
 .form_settings input[type="checkbox"]
 { padding: 2px 0; 
@@ -316,7 +367,8 @@ ul#menu li.current a, ul#menu li:hover a
   border: 0; 
   background: #FFF; 
   color: #47433F;
-  margin: 28px 0;}
+  margin: 28px 0;
+  border: 5px solid red;}
 
 .form_settings .submit
 { font: bold 100% arial; 
@@ -335,4 +387,29 @@ ul#menu li.current a, ul#menu li:hover a
   -webkit-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;
   -moz-box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;
   box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px;
-  color: #FFF;}
+  color: #FFF;
+  border: 5px solid red;}
+  
+.sidebar{
+	border: none;}
+	
+input[type=submit] {
+    padding:5px 10px; 
+    background:#ccc; 
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+    width: 110px;
+    font-size: 100%;
+}
+input[type=submit]:hover {
+    padding:5px 10px; 
+    background:#ccc; 
+    border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+    width: 110px;
+    font-size: 120%;
+}
