@@ -7,31 +7,30 @@
 {% block content %}
 
 
-<form  enctype="multipart/form-data" method="post" action={% url "profil"  %}>
-{% csrf_token %}
-{{form1.as_p}}
-<input type="submit" name="other" value="update">    
-</form>
-
-
 <form  method="post" action={% url "profil"  %}>
 {% csrf_token %}
-{{form2.as_p}}
+{{form1.as_p}}
 <input type="submit" name="nameEmail"  value="update">    
 </form>
 
 
 <form method="post" action={% url "profil"  %}>
 {% csrf_token %}
-{{form3.as_p}}
+{{form2.as_p}}
 <input type="submit" name="password" value="update">    
+</form>
+
+<form method="post" action={% url "profil"  %}>
+{% csrf_token %}
+{{teamForm.as_p}}
+<input type="submit" name="teamAdd" value="update">    
 </form>
 
 
 <ul>
-{% for note in notes %}
+{% for team in teams %}
 
-<li><a href="{% url 'noteDetail' note.id %}">{{note.name}}</a></li>
+<li><a href={% url 'teamChange' team.id %}>{{team.name}}</a></li>
 
 {%endfor%}
 </ul>

@@ -59,15 +59,6 @@ class Comment(models.Model):
     
     def __unicode__(self):
         return self.text
-    
-
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(User)
-    avatar = models.ImageField("Image", upload_to="images/")
-    
-User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
-    
 
 class Team(models.Model):
     name = models.CharField(max_length=100)
@@ -78,16 +69,3 @@ class Team(models.Model):
     
     def __unicode__(self):
         return self.name
-
-
-
-    
-    
-
-    
-    
-    
-
-
-    
-    

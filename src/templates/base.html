@@ -1,43 +1,111 @@
-<!DOCTYPE html>
 
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
 <head>
-    
+  
+  <meta name="description" content="free website template" />
+  <meta name="keywords" content="enter your keywords here" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
-    {% block head %} {% endblock %} 
+    
+    
     <title>{% block title %}Page Title{% endblock %}</title>
-    <link rel="stylesheet" type='text/css' href="{% static 'styl.css' %}">
+     {% load tags %}
+     
+     
+     {% block head %} {% endblock %}
+     
 </head>
 
 
 
 <body>
+  <div id="main">
+	  
+	<div id="menubar_container">	    
+	  <div id="menubar">
+	    
+		<div id="welcome">
+	      <h1><a href="#">Turistická mapa</a></h1>
+	    </div><!--close welcome-->
+		
+        <div id="menu_items">
+	      <ul id="menu">
+            <li ><a href="{% url 'profil' %}">Profil</a></li>
+            <li><a href="{% url 'noteAdd' %}">Pridaj zápis</a></li>
+            <li><a href="{% url 'noteDetailPaginator' %}">Zápisy</a></li>
+            <li><a href="{% url 'searching' %}">Vyhladávanie</a></li>
+            <li><a href="{% url 'logOut' %}">LogOut</a></li>
+          </ul>
+        </div><!--close menu-->		
+      
+	  </div><!--close menubar-->		  
+	</div><!--close menubar_container-->
+	
+	<div id="header_container">     		  
+    <div id="header">{% show_map%}</div><!--close header_container-->	
+	
+	<div id="slogan_container">     		  
+	  <div id="slogan">	  
+	    <h2>h2</h2>	  
+	  </div><!--close slogan-->				
+	</div><!--close slogan_container-->		
+	
+	<div id="site_content">		
 
-<ul>
-  <li><a href="/map/1">mapa</a></li>
-  <li><a href="/profil">Môj profil</a></li>
-  <li><a href="/noteadd">Pridaj zápis</a></li>
-  <!-- <li><a href="/notedetail/1">Prezerať zápisy</a></li>-->
-  <li><a href="/searching">Vyhľadať v zápisoch</a></li>
-  <ul style="float:right;list-style-type:none;">
-    <li><a class="active" href="/login">Log in</a></li>
-    <li><a class="active" href="/logout">Log out</a></li>
-  </ul>
-</ul>  
+	  <div class="sidebar_container">       
+		
+		<div class="sidebar">
+          <div class="sidebar_item">
+            <h2>New Website</h2>
+           
+           {% searching %}
+           
+           
+          </div><!--close sidebar_item--> 
+        </div><!--close sidebar-->     		
+		
+		
+		<div class="sidebar">
+          <div class="sidebar_item">
+            {% listNotes user %}
+		  </div><!--close sidebar_item--> 
+        </div><!--close sidebar-->  
+		
+      </div><!--close sidebar_container-->		  
+	 
+	  <div id="content">
         
-<form method="post" action={% url "logOut"  %}>
-{% csrf_token %}
-{% if errorLog %}{{errorLog}} {%endif%}
-
-<input type="submit"  value="LogOut" />
-    
-</form>
-
-
-{%block content%} section {%endblock%}
-
+		<div class="content_item">
+		  
+		  <h1>h1</h1> 
+	     <!-- <p>This standards compliant, simple, fixed width website template is released as an 'open source' design (under the Creative Commons Attribution 3.0 Licence), which means that you are free to download and use it for anything you want (including modifying and amending it). If you wish to remove the &lsquo;ARaynorDesign&rsquo; link in the footer of the template, all I ask is for a donation of &pound;20.00 GBP.</p>	  
+		  -->
+         {%block content%} section {%endblock%}
+		  
+		  
+		  
+          </div>		  
+		  
+		  		  
+		
+		</div><!--close content_item-->
+      
+	  </div><!--close content--> 
+	  
+	</div><!--close site_content--> 
+  
+  </div><!--close main-->
+  
+  <div id="footer">
+	  <!--<a href="http://validator.w3.org/check?uri=referer">Valid XHTML</a> | <a href="http://fotogrph.com/">Images</a> | website template by <a href="http://www.araynordesign.co.uk">ARaynorDesign</a> -->
+  </div><!--close footer-->  
+  
 </body>
 </html>
+
 

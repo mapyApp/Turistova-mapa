@@ -15,16 +15,12 @@ urlpatterns = patterns('',
     url(r'^login/$', 'mapa.views.logIn', name='logIn'),
     url(r'^logout/$', 'mapa.views.logOut', name='logOut'),
     url(r'^notedetail/(?P<note_id>\d+)/$', 'mapa.views.noteDetail', name='noteDetail'),
-    url(r'^map/(?P<layer_id>\d+)/$', 'mapa.views.map', name='map'),
+   ## url(r'^map/(?P<layer_id>\d+)/$', 'mapa.views.map', name='map'),
     url(r'^noteadd/$', 'mapa.views.noteAdd', name='noteAdd'),
      url(r'^searching/$', 'mapa.views.searching', name='searching'),
     url(r'^profil/$', 'mapa.views.profil', name='profil'),
-    url(r'^teampridaj/$', 'mapa.views.teamPridaj', name='teamPridaj'),
-    ##url(r'^teamuprav/(?P<team_id>\d+)/$', 'mapa.views.teamUprav', name='teamUprav'),
+    url(r'^teamChange/(?P<team_id>\d+)/$', 'mapa.views.teamChange', name='teamChange'),
+    url(r'^notedetailpaginator/$', 'mapa.views.noteDetailPaginator', name='noteDetailPaginator'),
    
     
-    
-    
-
-    
-)+ static(MEDIA_URL, document_root=MEDIA_ROOT)
+)

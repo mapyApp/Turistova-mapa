@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+
+{% block title %}{{zapis.nazov}} {% endblock %}
+
+
+{% block content %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if notes.has_previous %}
+            <a href="?page={{ notes.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ notes.number }} of {{ notes.paginator.num_pages }}.
+        </span>
+
+        {% if notes.has_next %}
+            <a href="?page={{ notes.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+<br>
+
+<h1>{{note.name}}</h1>       {{note.author}}
+<p>{{note.date}}</p>
+<p>{{note.region}}</p>
+<p>{{note.description}}</p>
+<h2>Účastníci</h2>
+<ul>
+    {% for participant in note.participants.all %}
+    <li>{{participant.username}}</li>
+    {%endfor%} 
+</ul>
+<h2>Diskusia</h2>
+{% for d in discussion %}
+
+<p>{{d.author}}     {{d.date}}</p>
+<p> {{d.text}}</p>
+
+
+{% endfor %}
+
+<form  method="post" action={% url "noteDetail" note.id %}>
+{% csrf_token %}
+
+<textarea rows="4" cols="50" name="text">
+    
+</textarea>
+
+<input type="submit" name="discussion" value="pridaj príspevok">    
+</form>
+
+<h3>Napad</h3>
+<form  method="post" action={% url "noteDetail" note.id %}>
+{% csrf_token %}
+{{idea.as_p}}
+<input type="submit" name="idea" value="pridaj napad">    
+</form>
+
+<h2>Nápady</h2>
+<ul>
+{% for idea in ideas %}
+<li>{{idea}}</li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<ul>
+    
+<h2> Zoznam zápisov</h2>
+{% for note in notes %}
+
+<li><a href={% url 'noteDetail' note.id %}>{{note.name}}</a></li>
+
+{% endfor %}
+</ul>

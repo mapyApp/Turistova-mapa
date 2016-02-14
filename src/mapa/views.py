@@ -13,6 +13,7 @@ import json
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import Http404
 from itertools import chain
+from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 
 
 # Create your views here.
@@ -43,81 +44,81 @@ def noteDetail(request,note_id):
 def noteAdd(request):
     if not request.user.is_authenticated():
         return redirect("logIn")
+    
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = NoteForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            m = form.save(commit = False)
-            m.autor = request.user
-            try:
-                m.lat = float(request.POST["lat"])
-                m.lng = float(request.POST["lng"])
-            except ValueError:
-                form = NoteForm(request.POST)
-                error = '<p>Nebolo zadane umiestnenie na mape</p>'
-                return render(request,"zapisPridaj.html",dict(form=form,error=error))
-            m.save()
-            form.save_m2m()
-            return redirect("noteDetail",m.id)
-    # if a GET (or any other method) we'll create a blank form
-    else:     
+        if "noteAdd" in request.POST:
+            form = NoteForm(request.POST)
+            if form.is_valid():
+                m = form.save(commit = False)
+                m.author = request.user
+                try:
+                    m.lat = float(request.POST["lat"])
+                    m.lng = float(request.POST["lng"])
+                except ValueError:
+                    pass
+                m.save()
+                form.save_m2m()
+                layerAll = Layer.objects.filter(name="all")
+                if(len(layerAll)==0):
+                    layerAll = Layer.objects.get(name="all")
+                else:
+                    layerAll = layerAll[0]
+                m.layer.add(layerAll)
+                m.save()
+                return redirect("noteDetail",m.id)
+    else:
         form = NoteForm()
-
+    if "find" in request.POST:
+        form = NoteForm()
     return render(request, 'noteAddTemplate.html', {'form': form,})
 
-def value(st):
-    if st!= "":
-        return st
-    return-1
-
-def dateFormat(post):
-    print(post)
-    if post != "-":
-        date = post.split(".")
-        return date[2]+"-"+date[1]+"-"+date[0]
-    return "2000-2-2"
-
-def map(request,layer_id=1):
+def noteDetailPaginator(request):
     if not request.user.is_authenticated():
         return redirect("logIn")
-    if "find" in request.POST:
-        
-        
-        
-        notesLayer= Note.objects.filter(layer__id=value(request.POST["layer"]))
-        notesName = Note.objects.filter(id=value(request.POST["name"]))
-        notesRegion = Note.objects.filter(region=value(request.POST["region"]))
-        notesUser = Note.objects.filter(participants__id=value(request.POST["user"]))
-        notesDate = Note.objects.filter(date=dateFormat(request.POST["date"]))
-        notes = list(chain(notesLayer,notesName,notesRegion,notesUser,notesDate))
-        
-        findForm = FindForm()
-        
-        
-        if request.POST["layer"]:
-            l = Layer.objects.get(id=request.POST["layer"])
-        else:    
-            l = Layer.objects.get(id=1)
-        return render(request,"map.html",dict(layer=l,notes=notes,findForm = findForm))
+    notes_set = Note.objects.all().order_by("-id")
+    paginator = Paginator(notes_set, 1) # Show 25 contacts per page
+
+    page = request.GET.get('page')
     try:
-        l = Layer.objects.get(id=layer_id)
-    except Layer.DoesNotExist:
-        raise Http404("Vrstva neexistuje!!")
-    notes = Note.objects.filter(layer=l)
-    findForm = FindForm()    
-    return render(request,"map.html",dict(layer=l,notes=notes,findForm = findForm))
+        notes = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        notes = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        notes = paginator.page(paginator.num_pages)
+    note =  notes[0]
+    discussion =  Comment.objects.filter(note=note)
+    ideaForm = IdeaForm()
+    ideas = Idea.objects.filter(note=note)
+    if request.method=="POST":
+        if "discussion" in request.POST:
+            comment = Comment(author=request.user,text=request.POST["text"],note=note);
+            comment.save()
+        elif "idea" in request.POST:
+            if request.method == 'POST':
+                form = IdeaForm(request.POST)
+                if form.is_valid():
+                    m = form.save(commit = False)
+                    m.author = request.user
+                    m.save()
+                    note = Note.objects.get(id=note_id)
+                    note.idea.add(m)
+                    note.save()
+                    return redirect("noteDetail",note_id)
+    return  render(request,"noteDetailPaginatorTemplate.html",dict(notes=notes,note=note,discussion=discussion,idea=ideaForm,ideas=ideas))
+
 
 def logIn(request):
     if request.user.is_authenticated():
-        return redirect("map",1)
+        return redirect("profil")
     if(request.POST):
         name = request.POST['user']
         password = request.POST['password']
         user = authenticate(username=name, password=password)
         if user is not None:
             login(request, user)
-            return redirect("map",1)
+            return redirect("profil")
             
         else:
             return render(request,"logIn.html",{"errorLog":"Boli zadane zle udaje"})
@@ -131,90 +132,95 @@ def logOut(request):
 def profil(request):
     if not request.user.is_authenticated():
         return redirect("logIn.html")
-    if request.method == "POST":
-        if "other" in request.POST:
-            form1 = UserProfilForm(request.POST,request.FILES,instance=request.user.profile)
-            if form1.is_valid():
-                instance = form1.save(commit=False)
-                instance.autor = request.user
-                instance.save()
-        if "nameEmail" in request.POST:
-            form2 = UserForm(request.POST,instance = request.user)
-            if form2.is_valid():
-                f2 =form2.save()
-        if "password" in request.POST:
-            form3 = PasswordChangeForm(user=request.user,data=request.POST)
-            if form3.is_valid():
-                form3.save()
-                update_session_auth_hash(request,request.user)
-        return redirect("logOut")
-    #u = UserProfile.objects.get(id=1)
-    notes = Note.objects.filter(participants__id=request.user.id)
-    form1 = UserProfilForm(instance = request.user.profile)
-    form2 = UserForm(instance = request.user)
-    form3 = PasswordChangeForm(request.user)
     
-    return render(request,"profilTemplate.html",dict(form1=form1,form2=form2,form3= form3,profil=request.user.profile,notes=notes))
-
-def teamPridaj(request):
-    if not request.user.is_authenticated():
-        return redirect("logIn.html")
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = TeamForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            m = form.save(commit = False)
-            m.zakladatel = request.user
-            m.save()
-            teamVytvoreny = True
-            return redirect("teamUprav",teamVytvoreny)
-
-    # if a GET (or any other method) we'll create a blank form
+    if "nameEmail" in request.POST:
+        form1 = UserForm(request.POST,instance = request.user)
+        if form1.is_valid():
+            m =form1.save()
     else:
-        form = TeamForm()
-    return render(request,"teamPridaj.html",dict(form = form))
+        form1 = UserForm(instance = request.user)
+    
+    if "password" in request.POST:
+        form2 = PasswordChangeForm(user=request.user,data=request.POST)
+        if form2.is_valid():
+            form2.save()
+            update_session_auth_hash(request,request.user)
+    else:
+        form2 = PasswordChangeForm(request.user)
+        
+    if "teamAdd" in request.POST:
+        teamForm = TeamForm(request.POST)
+        if teamForm.is_valid():
+            m = teamForm.save(commit = False)
+            m.author = request.user
+            m.save()
+            return redirect("teamChange", m.id)
+    else:
+        teamForm = TeamForm()
+       
+    if "find" in request.POST:
+        form1 = UserForm(instance = request.user)
+        form2 = PasswordChangeForm(request.user)
+        teamForm = TeamForm()
+    teams = Team.objects.filter(author=request.user)
+    return render(request,"profilTemplate.html",dict(form1=form1,form2=form2,teamForm=teamForm,teams=teams))
 
-def teamUprav(request,team_id,teamVytvoreny=False):
+
+
+def teamChange(request,team_id):
     if not request.user.is_authenticated():
         return redirect("logIn.html")
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        team = Team.objects.get(pk=team_id)
-        form = TeamForm(request.POST,instance = team)
+        if "updateTeam" in request.POST:
+            team = Team.objects.get(pk=team_id)
+            form = TeamForm(request.POST,instance = team)
         # check whether it's valid:
-        if form.is_valid():
+            if form.is_valid():
             # process the data in form.cleaned_data as required
             # ...
             # redirect to a new URL:
-            m = form.save()
-            teamSprava = "Team bol upraveny"
-            return render(request,"teamUprav.html",dict(form = form,id=team_id,sprava = teamSprava))
+                m = form.save()
+                return render(request,"teamChangeTemplate.html",dict(form = form,id=team_id))
+               
 
     # if a GET (or any other method) we'll create a blank form
     else:
         team = Team.objects.get(pk=team_id)
         form = TeamForm(instance = team)
-    return render(request,"teamUprav.html",dict(form = form,id=team_id))
+    return render(request,"teamChangeTemplate.html",dict(form = form,id=team_id))
 
 
-def napadUprav(request):
-    pass
+
+def value(st):
+    if st!= "":
+        return st
+    return-1
+
+def dateFormat(post):
+    if post != ("-"):
+        date = post.split(".")
+        return date[2]+"-"+date[1]+"-"+date[0]
+    return "2000-2-2"
 
 def searching(request):
     if not request.user.is_authenticated():
         return redirect("logIn.html")
-    notes = []
-    if "find" in request.POST:
-        notesLayer= Note.objects.filter(layer__id=value(request.POST["layer"]))
-        notesName = Note.objects.filter(id=value(request.POST["name"]))
-        notesRegion = Note.objects.filter(region=value(request.POST["region"]))
-        notesUser = Note.objects.filter(participants__id=value(request.POST["user"]))
-        notesDate = Note.objects.filter(date=dateFormat(request.POST["date"]))
-        notes = list(chain(notesLayer,notesName,notesRegion,notesUser,notesDate))
-    form = FindForm()
+    notes=set()
+    if "advanceFind" in request.POST:
+        query = request.POST.getlist("layerFindAd")
+        for item in query:
+            map(notes.add,Note.objects.filter(layer__id=value(item)))
+        query = request.POST.getlist("nameFindAd")
+        for item in query:
+            map(notes.add,Note.objects.filter(id=value(item)))
+        query = request.POST.getlist("regionFindAd")
+        for item in query:
+            map(notes.add,Note.objects.filter(region=value(item)))
+        query = request.POST.getlist("userFindAd")
+        for item in query:
+            map(notes.add,Note.objects.filter(participants__id=value(item)))
+        
+    form = FindFormAdvance()
     return render(request,"searchingTemplate.html",dict(form=form,notes=notes))
 
