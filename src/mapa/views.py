@@ -163,7 +163,8 @@ def profil(request):
         form2 = PasswordChangeForm(request.user)
         teamForm = TeamForm()
     teams = Team.objects.filter(author=request.user)
-    return render(request,"profilTemplate.html",dict(form1=form1,form2=form2,teamForm=teamForm,teams=teams))
+    notes = Note.objects.filter(author=request.user)
+    return render(request,"profilTemplate.html",dict(form1=form1,form2=form2,teamForm=teamForm,teams=teams,notes=notes))
 
 
 
@@ -173,6 +174,8 @@ def teamChange(request,team_id):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         if "updateTeam" in request.POST:
+            print("update")
+            
             team = Team.objects.get(pk=team_id)
             form = TeamForm(request.POST,instance = team)
         # check whether it's valid:
@@ -189,6 +192,30 @@ def teamChange(request,team_id):
         team = Team.objects.get(pk=team_id)
         form = TeamForm(instance = team)
     return render(request,"teamChangeTemplate.html",dict(form = form,id=team_id))
+
+
+def noteChange(request,note_id):
+    if not request.user.is_authenticated():
+        return redirect("logIn.html")
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        if "updateNote" in request.POST:
+            note = Note.objects.get(pk=note_id)
+            form = NoteForm(request.POST,instance = note)
+        # check whether it's valid:
+            if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+                m = form.save()
+                return render(request,"noteChangeTemplate.html",dict(form = form,note=note))
+               
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        note = Note.objects.get(pk=note_id)
+        form = NoteForm(instance = note)
+    return render(request,"noteChangeTemplate.html",dict(form = form,note=note))
 
 
 

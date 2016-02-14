@@ -20,6 +20,7 @@ urlpatterns = patterns('',
      url(r'^searching/$', 'mapa.views.searching', name='searching'),
     url(r'^profil/$', 'mapa.views.profil', name='profil'),
     url(r'^teamChange/(?P<team_id>\d+)/$', 'mapa.views.teamChange', name='teamChange'),
+    url(r'^noteChange/(?P<note_id>\d+)/$', 'mapa.views.noteChange', name='noteChange'),
     url(r'^notedetailpaginator/$', 'mapa.views.noteDetailPaginator', name='noteDetailPaginator'),
    
     
