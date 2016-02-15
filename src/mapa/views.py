@@ -24,6 +24,7 @@ def noteDetail(request,note_id):
     discussion =  Comment.objects.filter(note=note)
     ideaForm = IdeaForm()
     ideas = Idea.objects.filter(note=note)
+    gallery = Image.objects.filter(note=note)
     if request.method=="POST":
         if "discussion" in request.POST:
             comment = Comment(author=request.user,text=request.POST["text"],note=note);
@@ -39,7 +40,7 @@ def noteDetail(request,note_id):
                     note.idea.add(m)
                     note.save()
                     return redirect("noteDetail",note_id)
-    return  render(request,"noteDetailTemplate.html",dict(note=note,discussion=discussion,idea=ideaForm,ideas=ideas))
+    return  render(request,"noteDetailTemplate.html",dict(note=note,discussion=discussion,idea=ideaForm,ideas=ideas, gallery=gallery))
 
 def noteAdd(request):
     if not request.user.is_authenticated():

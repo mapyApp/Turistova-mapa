@@ -37,9 +37,11 @@
 
 {% for pic in gallery %}
 <div class="img">
-  <a target="_blank" href=../../{{pic.img.url}}>
-    <img src={{pic.img.url}} alt={{pic.name}} width="300" height="200">
+  <a href=../..{{pic.img.url}}>
+    <!--<img src=~/Desktop/TIS/Turistova-mapa/src{{pic.img.url}} alt={{pic.url}} width="300" >-->
+    <img src={{pic.img.url}} alt={{pic.url}} width="300" > 
   </a>
+    <!--height="200"-->
   <div class="desc"> {{pic.description}}</div>
 </div>
 
