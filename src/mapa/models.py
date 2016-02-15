@@ -69,3 +69,10 @@ class Team(models.Model):
     
     def __unicode__(self):
         return self.name
+
+class Image(models.Model):
+    owner = models.ForeignKey(User)
+    note = models.ForeignKey(Note)
+    name = models.CharField(max_length=20)
+    description = models.TextField()
+    img = models.ImageField("image", upload_to="images/gallery")

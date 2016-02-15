@@ -10,7 +10,7 @@ urlpatterns = patterns('',
     # url(r'^$', 'turistickaMapa.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
-
+    url(r'^$','mapa.views.logIn', name='logIn'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login/$', 'mapa.views.logIn', name='logIn'),
     url(r'^logout/$', 'mapa.views.logOut', name='logOut'),

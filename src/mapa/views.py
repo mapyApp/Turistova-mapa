@@ -89,6 +89,7 @@ def noteDetailPaginator(request):
         notes = paginator.page(paginator.num_pages)
     note =  notes[0]
     discussion =  Comment.objects.filter(note=note)
+    gallery = Image.objects.filter(note=note)
     ideaForm = IdeaForm()
     ideas = Idea.objects.filter(note=note)
     if request.method=="POST":
@@ -106,7 +107,12 @@ def noteDetailPaginator(request):
                     note.idea.add(m)
                     note.save()
                     return redirect("noteDetail",note_id)
-    return  render(request,"noteDetailPaginatorTemplate.html",dict(notes=notes,note=note,discussion=discussion,idea=ideaForm,ideas=ideas))
+    return  render(request,"noteDetailPaginatorTemplate.html",dict(notes=notes,
+                                                                    note=note,
+                                                                    discussion=discussion,
+                                                                    idea=ideaForm,
+                                                                    ideas=ideas,
+                                                                    gallery=gallery))
 
 
 def logIn(request):
@@ -131,7 +137,7 @@ def logOut(request):
 
 def profil(request):
     if not request.user.is_authenticated():
-        return redirect("logIn.html")
+        return redirect("logIn")
     
     if "nameEmail" in request.POST:
         form1 = UserForm(request.POST,instance = request.user)
@@ -170,7 +176,7 @@ def profil(request):
 
 def teamChange(request,team_id):
     if not request.user.is_authenticated():
-        return redirect("logIn.html")
+        return redirect("logIn")
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         if "updateTeam" in request.POST:
@@ -196,7 +202,7 @@ def teamChange(request,team_id):
 
 def noteChange(request,note_id):
     if not request.user.is_authenticated():
-        return redirect("logIn.html")
+        return redirect("logIn")
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         if "updateNote" in request.POST:
@@ -232,7 +238,7 @@ def dateFormat(post):
 
 def searching(request):
     if not request.user.is_authenticated():
-        return redirect("logIn.html")
+        return redirect("logIn")
     notes=set()
     if "advanceFind" in request.POST:
         query = request.POST.getlist("layerFindAd")
@@ -250,4 +256,3 @@ def searching(request):
         
     form = FindFormAdvance()
     return render(request,"searchingTemplate.html",dict(form=form,notes=notes))
-
