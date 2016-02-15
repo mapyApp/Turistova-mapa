@@ -4,7 +4,7 @@ from models import *
 print("server start NOW")
 
 # inicializacia databazy...
-default_layers = ["All"]
+default_layers = ["all"]
 default_kraje = "Bratislavský, Košický, Trenčiansky, Trnavský, Prešovský, Nitriansky".split()
 print(default_kraje)
 

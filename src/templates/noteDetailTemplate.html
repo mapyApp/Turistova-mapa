@@ -12,7 +12,7 @@
 <p>{{note.region}}</p>
 <p>{{note.description}}</p>
 </div> 
-<!--<div class="username">-->
+<div class="username">
 
 <h2>Galéria</h2>
 
@@ -24,9 +24,8 @@
   <div class="desc"> {{pic.description}}</div>
 </div>
 {% endfor %}
-
-
-      
+</div>
+<div class="username">
 <h2>Diskusia</h2>
 {% for d in discussion %}
 
@@ -34,7 +33,7 @@
 <p> {{d.text}}</p>
 
 {% endfor %}
-
+</div>
 <form  method="post" action={% url "noteDetail" note.id %}>
 {% csrf_token %}
 
