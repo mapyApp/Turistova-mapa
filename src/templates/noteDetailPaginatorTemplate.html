@@ -22,7 +22,7 @@
     </span>
 </div>
 <br>
-
+<div class="username">
 <h1>{{note.name}}</h1>       {{note.author}}
 <p>{{note.date}}</p>
 <p>{{note.region}}</p>
@@ -33,6 +33,8 @@
     <li>{{participant.username}}</li>
     {%endfor%} 
 </ul>
+</div>
+<div class="username">
 <h2>Galéria</h2>
 
 {% for pic in gallery %}
@@ -46,7 +48,8 @@
 </div>
 
 {% endfor %}
-
+</div>
+<div class="username">
 <h2>Diskusia</h2>
 {% for d in discussion %}
 
@@ -65,14 +68,16 @@
 
 <input type="submit" name="discussion" value="pridaj príspevok">    
 </form>
-
+</div>
+<div class="username">
 <h3>Napad</h3>
 <form  method="post" action={% url "noteDetail" note.id %}>
 {% csrf_token %}
 {{idea.as_p}}
 <input type="submit" name="idea" value="pridaj napad">    
 </form>
-
+</div>
+<div class="username">
 <h2>Nápady</h2>
 <ul>
 {% for idea in ideas %}
@@ -80,3 +85,4 @@
 {% endfor %}
 </ul>
 {% endblock %}
+</div>
