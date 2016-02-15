@@ -13,6 +13,17 @@
 <p>{{note.description}}</p>
 </div> 
 <div class="username">
+
+<h2>Galéria</h2>
+
+{% for pic in gallery %}
+<div class="img">
+  <a target="_blank" href=../../{{pic.img.url}}>
+    <img src={{pic.img.url}} alt={{pic.name}} width="300" height="200">
+  </a>
+  <div class="desc"> {{pic.description}}</div>
+</div>
+    
 <h2>Diskusia</h2>
 {% for d in discussion %}
 
