@@ -26,7 +26,7 @@ class TeamForm(ModelForm):
 class IdeaForm(ModelForm):
     class Meta:
         model = Idea
-        fields = ["name","description"]
+        fields = ["name","description","team"]
 
 class FindForm(forms.Form):
     cursor = connection.cursor()

@@ -10,13 +10,6 @@ class Region(models.Model):
     def __unicode__(self):
         return self.name
 
-class Idea(models.Model):
-    author = models.ForeignKey(User)
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    
-    def __unicode__(self):
-        return self.name
 
 # Create your models here.
 class Layer(models.Model):
@@ -35,6 +28,26 @@ class Layer(models.Model):
     def __unicode__(self):
         return self.name
 
+
+class Team(models.Model):
+    name = models.CharField(max_length=100)
+    author = models.ForeignKey(User,related_name="authorTeam")
+    participants = models.ManyToManyField(User)
+    description = models.TextField()
+    
+    
+    def __unicode__(self):
+        return self.name
+
+class Idea(models.Model):
+    author = models.ForeignKey(User)
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    team = models.ManyToManyField(Team)
+    
+    def __unicode__(self):
+        return self.name
+    
 class Note(models.Model):
     name = models.CharField(max_length=200)
     date = models.DateField()
@@ -59,16 +72,6 @@ class Comment(models.Model):
     
     def __unicode__(self):
         return self.text
-
-class Team(models.Model):
-    name = models.CharField(max_length=100)
-    author = models.ForeignKey(User,related_name="authorTeam")
-    participants = models.ManyToManyField(User)
-    description = models.TextField()
-    ideas = models.ManyToManyField(Idea,blank=True)
-    
-    def __unicode__(self):
-        return self.name
 
 class Image(models.Model):
     owner = models.ForeignKey(User)

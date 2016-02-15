@@ -2,6 +2,7 @@ from django import template
 from ..models import *
 from ..forms import FindForm
 from itertools import chain
+from django.http import Http404
 register = template.Library()
 
 

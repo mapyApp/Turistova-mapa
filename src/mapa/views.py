@@ -35,6 +35,7 @@ def noteDetail(request,note_id):
                     m = form.save(commit = False)
                     m.author = request.user
                     m.save()
+                    form.save_m2m()
                     note = Note.objects.get(id=note_id)
                     note.idea.add(m)
                     note.save()
@@ -87,7 +88,10 @@ def noteDetailPaginator(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         notes = paginator.page(paginator.num_pages)
-    note =  notes[0]
+    try:
+        note =  notes[0]
+    except IndexError:
+        raise Http404("treba vytvorit aspon 1 zapis")
     discussion =  Comment.objects.filter(note=note)
     gallery = Image.objects.filter(note=note)
     ideaForm = IdeaForm()
@@ -160,6 +164,7 @@ def profil(request):
             m = teamForm.save(commit = False)
             m.author = request.user
             m.save()
+            teamForm.save_m2m()
             return redirect("teamChange", m.id)
     else:
         teamForm = TeamForm()
@@ -170,7 +175,17 @@ def profil(request):
         teamForm = TeamForm()
     teams = Team.objects.filter(author=request.user)
     notes = Note.objects.filter(author=request.user)
-    return render(request,"profilTemplate.html",dict(form1=form1,form2=form2,teamForm=teamForm,teams=teams,notes=notes))
+    teamsMember = Team.objects.filter(participants=request.user)
+    print(teamsMember)
+    ideas =set()
+    for item in teamsMember:
+        map(ideas.add,Idea.objects.filter(team=item))
+    print(ideas)   
+    return render(request,"profilTemplate.html",dict(form1=form1,
+                                                     form2=form2,
+                                                     teamForm=teamForm,
+                                                     teams=teams,
+                                                     notes=notes,ideas=ideas))
 
 
 

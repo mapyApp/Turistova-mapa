@@ -37,8 +37,9 @@
 </div>
 
 
-<ul>
+
 <h3>Teams</h3>
+<ul>
 {% for team in teams %}
 
 <li><a href={% url 'teamChange' team.id %}>{{team.name}}</a></li>
@@ -50,6 +51,15 @@
 <ul>
 {% for note in notes %}
 <li><a href={% url 'noteChange' note.id %}>{{note.name}}</a></li>
+
+{%endfor%}
+</ul>
+
+<h3>Ideas</h3>
+<ul>
+{% for idea in ideas %}
+
+<li>{{idea.name}}</li>
 
 {%endfor%}
 </ul>
