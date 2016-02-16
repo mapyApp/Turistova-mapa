@@ -311,11 +311,11 @@ div.username {
    font-size: 110%;
    
 	}
+div.username  label {
+	width: 90px;
+	display: inline-block;}
 
-div.username :hover {
-	font-weight: bold;
-   
-	}
+
 input.button {
   display: inline-block;
   border-radius: 4px;
@@ -325,7 +325,7 @@ input.button {
   text-align: center;
   font-size: 28px;
   padding: 20px;
-  width: 200px;
+  width: 220px;
   transition: all 0.5s;
   cursor: pointer;
   margin: 5px;
