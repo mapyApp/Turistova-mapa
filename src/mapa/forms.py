@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from django.forms import ModelForm
 from django import forms
 from models import*
@@ -36,12 +37,13 @@ class FindForm(forms.Form):
         st=str(item[0].day)+"."+str(item[0].month)+"."+str(item[0].year)
         array.append((st,st))
     default = array[0][0]
-    nameFind =  forms.ModelChoiceField(Note.objects.all(),required = False)
-    layerFind = forms.ModelChoiceField(Layer.objects.all(),required = False)
-    dateFind = forms.ChoiceField(choices=array,required = False)
-    regionFind = forms.ModelChoiceField(Region.objects.all(),required = False)
-    userFind = forms.ModelChoiceField(User.objects.all(),required = False)
-    authorFind = forms.ModelChoiceField(User.objects.all(),required = False)
+    
+    textFindSide = forms.CharField(label='Názov',max_length=50)
+    layerFind = forms.ModelChoiceField(Layer.objects.all(),required = False,label = 'Vrstva')
+    dateFind = forms.ChoiceField( choices=array,required = False,label = 'Dátum')
+    regionFind = forms.ModelChoiceField( Region.objects.all(),required = False,label = 'Región')
+    userFind = forms.ModelChoiceField(User.objects.all(),required = False,label = 'Účastník')
+    authorFind = forms.ModelChoiceField(User.objects.all(),required = False, label = 'Autor',)
     
     
 class FindFormAdvance(forms.Form):

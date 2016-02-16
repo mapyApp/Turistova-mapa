@@ -8,9 +8,9 @@
 <div class="username">
 <form  method="post" action={% url "searching"  %}>
 {% csrf_token %}
+Názov: <input type="text" name="textFind" > <br>
+
 {{form.as_p}}
-
-
 
 <input type="submit" name="advanceFind"  value="find">    
 </form>
@@ -23,6 +23,3 @@
 {%endfor%}
 </ul>
 {% endblock %}
-
-
-
