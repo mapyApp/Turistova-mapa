@@ -237,6 +237,9 @@ def noteChange(request,note_id):
     else:
         note = Note.objects.get(pk=note_id)
         form = NoteForm(instance = note)
+    if "find" in request.POST:
+        note = Note.objects.get(pk=note_id)
+        form = NoteForm(instance = note)
     return render(request,"noteChangeTemplate.html",dict(form = form,note=note))
 
 
