@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for turistickaMapa project.
 
@@ -7,7 +8,6 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
@@ -91,4 +91,6 @@ AUTH_PROFILE_MODULE = 'mapa.UserProfile'
 
 STATICFILES_DIRS = ( 'static', )
 
-
+#default database, will be included at server start...
+default_layers = ["all"]
+default_regions = u"Bratislavský Košický Trenčiansky Trnavský Prešovský Nitriansky Žilinský Banskobystrický Zahraničie".split()
