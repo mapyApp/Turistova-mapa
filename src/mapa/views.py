@@ -275,3 +275,9 @@ def searching(request):
         
     form = FindFormAdvance()
     return render(request,"searchingTemplate.html",dict(form=form,notes=notes))
+
+def ideaDetail(request,idea_id):
+    if not request.user.is_authenticated():
+        return redirect("logIn")
+    idea = Idea.objects.get(id=idea_id)
+    return render(request,"ideaDetailTemplate.html",dict(idea =idea))

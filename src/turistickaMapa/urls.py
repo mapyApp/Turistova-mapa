@@ -23,6 +23,8 @@ urlpatterns = patterns('',
     url(r'^teamChange/(?P<team_id>\d+)/$', 'mapa.views.teamChange', name='teamChange'),
     url(r'^noteChange/(?P<note_id>\d+)/$', 'mapa.views.noteChange', name='noteChange'),
     url(r'^notedetailpaginator/$', 'mapa.views.noteDetailPaginator', name='noteDetailPaginator'),
+    url(r'^ideadetail/(?P<idea_id>\d+)/$', 'mapa.views.ideaDetail', name='ideaDetail'),
+    
    
     
 )

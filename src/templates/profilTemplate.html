@@ -59,7 +59,7 @@
 <ul>
 {% for idea in ideas %}
 
-<li>{{idea.name}}</li>
+<li><a href={% url 'ideaDetail' idea.id %}>{{idea.name}}<a/></li>
 
 {%endfor%}
 </ul>
