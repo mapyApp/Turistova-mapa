@@ -17,13 +17,14 @@
 {{error}}
 {% endif %}
 <div class="username">
+<h2>Kliknutím na mapu určite polohu výletu.</h2>
 <form  method="post" action={% url "noteAdd"  %}>
 {% csrf_token %}
 {{ form.as_p }}
 
 <input type="hidden"  id="lat" name="lat" required>
 <input type="hidden"  id="lng" name="lng" required>
-<input type="submit" name="noteAdd" value="pridaj">
+<input class="input_border" type="submit" name="noteAdd" value="pridaj">
 {% if error %}{{error}}{%endif%}
 
 </form>
