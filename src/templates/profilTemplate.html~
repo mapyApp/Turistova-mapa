@@ -12,7 +12,7 @@
 {% csrf_token %}
 <h3>Zmena mena a emailu</h3>
 {{form1.as_p}}
-<input type="submit" name="nameEmail"  value="Zmeň">  
+<input class="button"type="submit" name="nameEmail"  value="Zmeň">  
 
 </form>
 </div>
@@ -23,7 +23,7 @@
 {% csrf_token %}
 <h3>Zmena prihlasovacieho hesla</h3>
 {{form2.as_p}}
-<input type="submit" name="password" value="Zmeň">    
+<input class="button" type="submit" name="password" value="Zmeň">    
 </form>
 </div>
 
@@ -32,20 +32,22 @@
 {% csrf_token %}
 <h3>Pridať nový tím</h3>
 {{teamForm.as_p}}
-<input type="submit" name="teamAdd" value="Pridaj">    
+<input class="button" type="submit" name="teamAdd" value="Pridaj">    
 </form>
 </div>
 
 
-<ul>
+<div class="username">
 <h3>Teams</h3>
+<ul>
 {% for team in teams %}
 
 <li><a href={% url 'teamChange' team.id %}>{{team.name}}</a></li>
 
 {%endfor%}
 </ul>
-
+</div>
+<div class="username">
 <h3>Notes</h3>
 <ul>
 {% for note in notes %}
@@ -53,7 +55,17 @@
 
 {%endfor%}
 </ul>
+</div>
+<div class="username">
+<h3>Ideas</h3>
+<ul>
+{% for idea in ideas %}
 
+<li><a href={% url 'ideaDetail' idea.id %}>{{idea.name}}<a/></li>
+
+{%endfor%}
+</ul>
+</div>
 
 
 
