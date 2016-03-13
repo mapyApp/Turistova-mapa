@@ -9,7 +9,7 @@ register = template.Library()
 def value(st):
     if st!= "":
         return st
-    return-1
+    return -1
 
 def dateFormat(post):
     if post != ("-"):
