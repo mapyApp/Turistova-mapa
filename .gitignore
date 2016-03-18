@@ -6,3 +6,5 @@
 *.py[co]
 __pycache__
 MANIFEST
+
+src/db.sqlite3
