@@ -53,11 +53,19 @@ def noteAdd(request):
             if form.is_valid():
                 m = form.save(commit = False)
                 m.author = request.user
+
                 try:
                     m.lat = float(request.POST["lat"])
                     m.lng = float(request.POST["lng"])
                 except ValueError:
                     pass
+
+                if m.lat is None:   #nie je kliknute na mapu
+                    form = NoteForm()
+                    if "find" in request.POST:
+                        form = NoteForm()
+                    return render(request, 'noteAddTemplate.html', {'form': form})
+
                 m.save()
                 form.save_m2m()
                 layerAll = Layer.objects.filter(name="all")
@@ -67,6 +75,7 @@ def noteAdd(request):
                     layerAll = layerAll[0]
                 m.layer.add(layerAll)
                 m.save()
+
                 return redirect("noteDetail",m.id)
     else:
         form = NoteForm()

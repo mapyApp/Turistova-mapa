@@ -18,10 +18,6 @@
 
 {% block content %}
 
-
-
-
-
 <script  type="text/javascript" >
 
 function fillCountry(map,r){      
@@ -56,6 +52,7 @@ function initMap() {
     center: {lat: 48.578333, lng: 19.123333},
     zoom: 8
   });
+  console.log("chuju!");
  
  
  var returnGeom = '17.25166,48.02499|17.16638,48.01250|17.11666,48.03861|17.08111,48.08834|17.06915,48.13526|16.97527,48.18833|16.94972,48.27805|17.03413,48.27166|17.19564,48.23589|17.20448,48.13434|17.25166,48.02499';
@@ -82,6 +79,7 @@ var returnGeom3 = '19.86791,49.19713|19.91125,49.22617|19.97958,49.22639|20.0205
 
 
 function nastavenie() {
+    console.log("nastavenie---------------");
       initMap();
 }
 
