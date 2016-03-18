@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import logging
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -81,11 +82,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/turisti/static/'
 
-TEMPLATE_DIRS = ("templates",)
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_URL = '/turisti/media/'
 
 AUTH_PROFILE_MODULE = 'mapa.UserProfile'
 
@@ -94,3 +97,9 @@ STATICFILES_DIRS = ( 'static', )
 #default database, will be included at server start...
 default_layers = ["all"]
 default_regions = u"Bratislavský Košický Trenčiansky Trnavský Prešovský Nitriansky Žilinský Banskobystrický Zahraničie".split()
+
+logging.basicConfig(
+  format = '%(asctime)s %(levelname)s %(message)s',
+  filename = '/home/turisti/apache2logs/django.log',
+  filemode = 'a'
+)
