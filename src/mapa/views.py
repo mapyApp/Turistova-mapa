@@ -121,6 +121,8 @@ def noteDetailPaginator(request):
 
 
 def logIn(request):
+    logger = logging.getLogger(__name__)
+    logger.info(request.META['HTTP_HOST'])
     if request.user.is_authenticated():
         return redirect("profil")
     if(request.POST):
