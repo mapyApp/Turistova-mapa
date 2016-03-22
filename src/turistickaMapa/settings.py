@@ -98,8 +98,8 @@ STATICFILES_DIRS = ( 'static', )
 default_layers = ["all"]
 default_regions = u"Bratislavský Košický Trenčiansky Trnavský Prešovský Nitriansky Žilinský Banskobystrický Zahraničie".split()
 
-logging.basicConfig(
-  format = '%(asctime)s %(levelname)s %(message)s',
-  filename = '/home/turisti/apache2logs/django.log',
-  filemode = 'a'
-)
+# logging.basicConfig(
+#   format = '%(asctime)s %(levelname)s %(message)s',
+#   filename = '/home/turisti/apache2logs/django.log',
+#   filemode = 'a'
+# )

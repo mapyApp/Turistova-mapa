@@ -29,9 +29,10 @@
 <h2>Diskusia</h2>
 {% for d in discussion %}
 
-<p>{{d.author}}     {{d.date}}</p>
-<p> {{d.text}}</p>
-
+<div class="userpost">
+    <p>{{d.author}}     {{d.date}}</p>
+    <p> {{d.text}}</p>
+</div>
 {% endfor %}
 
 <form  method="post" action={% url "noteDetail" note.id %}>

@@ -459,3 +459,11 @@ div.desc {
     padding: 15px;
     text-align: center;
 }
+
+.userpost {
+   border: 5px solid lightgreen;
+   border-radius: 25px;
+   padding: 10px;
+   margin: 2px;
+   /*font-size: 110%;    */
+}
