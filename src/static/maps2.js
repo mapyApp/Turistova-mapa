@@ -44,12 +44,6 @@ function initMap() {
         zoom: 7
     });
     
-    var marker = new google.maps.Marker({
-            position: {lat: 48.578333, lng: 19.123333},
-            map: map,
-            title: "CENTER"
-        });
-    
     if (document.getElementById("lat")) {
         google.maps.event.addListener(map, 'click', function(event) {
         placeMarker(event.latLng);

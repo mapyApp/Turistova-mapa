@@ -188,11 +188,11 @@ def profil(request):
     teams = Team.objects.filter(author=request.user)
     notes = Note.objects.filter(author=request.user)
     teamsMember = Team.objects.filter(participants=request.user)
-    print(teamsMember)
+    # print(teamsMember)
     ideas =set()
     for item in teamsMember:
         map(ideas.add,Idea.objects.filter(team=item))
-    print(ideas)   
+    # print(ideas)   
     return render(request,"profilTemplate.html",dict(form1=form1,
                                                      form2=form2,
                                                      teamForm=teamForm,
@@ -207,7 +207,7 @@ def teamChange(request,team_id):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         if "updateTeam" in request.POST:
-            print("update")
+            # print("update")
             
             team = Team.objects.get(pk=team_id)
             form = TeamForm(request.POST,instance = team)

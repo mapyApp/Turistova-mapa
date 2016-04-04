@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from settings import *
 admin.autodiscover()
 
-print("URLs loaded NOW")
+# print("URLs loaded NOW")
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'turistickaMapa.views.home', name='home'),

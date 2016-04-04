@@ -20,7 +20,7 @@ def dateFormat(post):
 @register.inclusion_tag('showMapTemplate.html',takes_context=True)
 def show_map(context):
     request = context['request']
-    print(request.POST)
+    # print(request.POST)
     if "find" in request.POST:
         notesLayer= Note.objects.filter(layer__id=value(request.POST["layerFind"]))
         try:
@@ -43,7 +43,7 @@ def show_map(context):
             l = Layer.objects.get(id=request.POST["layerFind"])
         else:    
             l = Layer.objects.get(id=2)
-        print("*"*20)
+        # print("*"*20)
         return  dict(layer=l,notes=notes,findForm = findForm)
     try:
         l = Layer.objects.get(name="all")
